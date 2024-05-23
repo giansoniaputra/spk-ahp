@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\Kriteria;
 use App\Models\Alternatif;
-use Illuminate\Support\Facades\Validator;
+use App\Models\SubKriteria;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class AlternatifController extends Controller
 {
@@ -44,6 +46,16 @@ class AlternatifController extends Controller
 
         $data['unique'] = Str::orderedUuid();
         Alternatif::create($data);
+        $alternatif = Alternatif::latest()->first();
+        $kriterias = Kriteria::all();
+        foreach ($kriterias as $kriteria) {
+            $data2 = [
+                'unique' => Str::orderedUuid(),
+                'kriteria_id' => $kriteria->id,
+                'sub_kriteria' => $alternatif->id,
+            ];
+            SubKriteria::create($data2);
+        }
         return response()->json(['success' => 'Alternatif Berhasi Di Buat!']);
     }
 
@@ -66,12 +78,14 @@ class AlternatifController extends Controller
 
         $alternatif->fill($data);
         $alternatif->save();
+
         return response()->json(['success' => 'Data SubKriteria Berhasil Diedit']);
     }
 
     public function destroy(Alternatif $alternatif)
     {
         Alternatif::destroy($alternatif->id);
+        SubKriteria::where('sub_kriteria', $alternatif->id)->delete();
         return response()->json(['success' => 'Data Kriteria Behasil Dihapus']);
     }
 }

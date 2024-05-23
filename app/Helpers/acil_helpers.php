@@ -1,23 +1,46 @@
 <?php
 
-use App\Http\Livewire\PerbandinganKriteria;
-use App\Models\Alternatif;
 use App\Models\Ir;
 use App\Models\Kriteria;
-use App\Models\PerbandinganKriteriaModel;
-use App\Models\PerbandinganSubKriteria;
-use App\Models\Perhitungan;
+use App\Models\Rangking;
+use App\Models\Alternatif;
 use App\Models\PvKriteria;
-use App\Models\PvSubKriteria;
+use App\Models\Perhitungan;
 use App\Models\SubKriteria;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\PvSubKriteria;
+use Illuminate\Support\Facades\DB;
+use App\Models\PerbandinganSubKriteria;
+use App\Models\PerbandinganKriteriaModel;
+use App\Http\Livewire\PerbandinganKriteria;
 
 function getKriteriaID($urut)
 {
     $data = DB::table('kriteria')->select('id')->orderBy('id')->get();
 
     return $data[$urut];
+}
+
+function cekPV()
+{
+    return Pvkriteria::first();
+}
+function cekAlternatif()
+{
+    return Alternatif::first();
+}
+function getAllKriteria()
+{
+    return Kriteria::all();
+}
+function cekPerbandinganSub()
+{
+    return PerbandinganSubKriteria::first();
+}
+
+function cekRanking()
+{
+    return Rangking::first();
 }
 
 function inputKriteriaPV($id_kriteria, $pv)
@@ -228,10 +251,12 @@ function showTabelPerbandinganSubkriteria($jenis, $kriteria_id)
 {
     $n = getJumlahSubkriteria($kriteria_id);
 
-    $SubKriteria = SubKriteria::where('kriteria_id', $kriteria_id)->get();
-
+    $SubKriteria = DB::table('sub_kriteria as a')
+        ->join('alternatif as b', 'a.sub_kriteria', '=', 'b.id')
+        ->select('a.*', 'b.alternatif')
+        ->where('a.kriteria_id', $kriteria_id)->get();
     foreach ($SubKriteria as $row) {
-        $pilihan[] = $row['sub_kriteria'];
+        $pilihan[] = $row->alternatif;
     }
 
     $data = [

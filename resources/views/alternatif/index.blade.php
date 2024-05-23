@@ -25,6 +25,26 @@
         </div>
     </div>
 </div>
+<div class="row mt-2">
+    <div class="col-sm-12">
+        <div class="card text-start">
+            <div class="card-body">
+                @php
+                $cek = cekPerbandinganSub();
+                $cekAlternatif = cekAlternatif();
+                @endphp
+                @if($cekAlternatif)
+                @if($cek)
+                <a href="/perbandingan-subkriterias?data=1&reset=1" class="btn btn-primary">Reset Perbandingan Alternatif</a>
+                @else
+                <a href="/perbandingan-subkriterias?data=1" class="btn btn-primary">Lanjut Perbandingan Alternatif</a>
+                @endif
+                @endif
+            </div>
+        </div>
+
+    </div>
+</div>
 @include('/alternatif.modal-alternatif')
 @endsection
 @section('script')

@@ -66,6 +66,8 @@ Route::get('/perhitungans/create', [PerhitunganController::class, 'create'])->mi
 Route::get('/perhitungans/update/{id}', [PerhitunganController::class, 'update'])->middleware('auth');
 Route::get('/normalisasi', [PerhitunganController::class, 'normalisasi'])->middleware('auth');
 Route::get('/perhitunganSAW', [PerhitunganController::class, 'perhitungan_saw'])->middleware('auth');
+Route::post('/perhitungans-perangkingan', [PerhitunganController::class, 'perhitungan_perangkingan'])->middleware('auth');
+Route::get('/ranking', [PerhitunganController::class, 'ranking'])->middleware('auth');
 Route::get('/', function () {
     $data = [
         'title' => 'Dashboard',

@@ -29,28 +29,56 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            {{-- <i class="fas fa-fw fa-cog"></i> --}}
-            <span>Master</span>
+        <a class="nav-link" href="/kriterias">
+            <span>Kriteria</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Kriteria & Alternatif</h6>
-                <a class="collapse-item" href="/kriterias">Kriteria</a>
-                <a class="collapse-item" href="/alternatifs">Alternatif</a>
-            </div>
-        </div>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/perbandingan-kriterias">
             <span>Perbandingan Kriteria</span>
         </a>
     </li>
+    @php
+    $cek = cekPV();
+    $cekAlternatif = cekAlternatif();
+    $cekPVSub = cekPerbandinganSub();
+    $cekRank = cekRanking();
+    $kriterias = getAllKriteria();
+    @endphp
+    @if ($cek)
+    <li class="nav-item">
+        <a class="nav-link" href="/alternatifs">
+            <span>Alernatif</span>
+        </a>
+    </li>
+    @endif
+    @if($cekPVSub)
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+            {{-- <i class="fas fa-fw fa-cog"></i> --}}
+            <span>Perbanfingan Alternatif</span>
+        </a>
+        <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                @foreach ($kriterias as $item)
+                <a class="collapse-item" href="/perbandingan-subkriterias?data={{ $loop->iteration }}">{{ $item->kriteria}}</a>
+                @endforeach
+            </div>
+        </div>
+    </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    @if($cekRank)
+    <li class="nav-item">
+        <a class="nav-link" href="/ranking">
+            <span>Ranking</span>
+        </a>
+    </li>
+    @endif
+    @endif
+
+    {{-- <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-            {{-- <i class="fas fa-fw fa-calculator"></i> --}}
             <span>Perbandingan Subkriteria</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -58,25 +86,12 @@
                 <h6 class="collapse-header">Kriteria :</h6>
                 @if (getJumlahKriteria() > 0)
                 @for ($i=0; $i <= (getJumlahKriteria()-1); $i++) <a class="collapse-item" href="/perbandingan-subkriterias?data={{ $i+1 }}">{{ getKriteriaNama($i)->kriteria }}</a>
-                    @endfor
-                    @endif
-            </div>
-        </div>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePerhitungan" aria-expanded="true" aria-controls="collapsePerhitungan">
-            {{-- <i class="fas fa-fw fa-calculator"></i> --}}
-            <span>Perhitungan</span>
-        </a>
-        <div id="collapsePerhitungan" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="/perhitungans">Masukkan Data</a>
-                <!-- <a class="collapse-item" href="/perhitungans/hasil">Hasil</a> -->
+    @endfor
+    @endif
+    </div>
+    </div>
+    </li> --}}
 
-
-            </div>
-        </div>
-    </li>
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities">

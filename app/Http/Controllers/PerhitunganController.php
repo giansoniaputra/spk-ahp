@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alternatif;
 use App\Models\Kriteria;
+use App\Models\Rangking;
+use App\Models\Alternatif;
+use App\Models\PvKriteria;
 use App\Models\Perhitungan;
 use App\Models\SubKriteria;
 use Illuminate\Http\Request;
+use App\Models\PvSubKriteria;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class PerhitunganController extends Controller
 {
@@ -165,5 +170,61 @@ class PerhitunganController extends Controller
         // SAW-----------------------------------------------------------------________________________________
 
         return response()->json(['data' => $data, 'rangkin_assoc' => $rangking_assoc]);
+    }
+
+    public function perhitungan_perangkingan()
+    {
+        $pvKriteria = PvKriteria::all();
+        $alternatifs = Alternatif::all();
+        $nama = [];
+        $nilai = [];
+
+        foreach ($alternatifs as $alternatif) {
+            $pvSub = DB::table('pv_sub_kriteria as a')
+                ->join('sub_kriteria as b', 'a.sub_kriteria_id', '=', 'b.id')
+                ->join('alternatif as c', 'c.id', '=', 'b.sub_kriteria')
+                ->select('a.*', 'b.sub_kriteria', 'c.alternatif')
+                ->where('b.sub_kriteria', $alternatif->id)
+                ->get();
+            $tampung = [];
+            foreach ($pvSub as $row) {
+                $tampung[] = $row->nilai;
+            }
+            $tampung2 = [];
+            for ($i = 0; $i < count($pvKriteria); $i++) {
+                $tampung2[] = round(($pvKriteria[$i]->nilai * $tampung[$i]), 4);
+            }
+            $nama[] = $alternatif->id;
+            $nilai[] =  array_sum($tampung2);
+        }
+        Rangking::truncate();
+        for ($j = 0; $j < count($nama); $j++) {
+            $data = [
+                'alternatif_id' => $nama[$j],
+                'nilai' => $nilai[$j],
+            ];
+            Rangking::create($data);
+        }
+        $data2 = [
+            'ranking' => DB::table('rangking as a')
+                ->join('alternatif as b', 'a.alternatif_id', '=', 'b.id')
+                ->select('a.*', 'b.alternatif')
+                ->orderBy('nilai', 'desc')->get()
+        ];
+        $view = View::make('perhitungan.render_ranking', $data2)->render();
+
+        return response()->json(['view' => $view]);
+    }
+
+    public function ranking()
+    {
+        $data2 = [
+            'title' => '',
+            'ranking' => DB::table('rangking as a')
+                ->join('alternatif as b', 'a.alternatif_id', '=', 'b.id')
+                ->select('a.*', 'b.alternatif')
+                ->orderBy('nilai', 'desc')->get()
+        ];
+        return view('perhitungan.ranking', $data2);
     }
 }

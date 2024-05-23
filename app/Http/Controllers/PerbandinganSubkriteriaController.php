@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kriteria;
 use App\Models\PerbandinganSubKriteria;
+use App\Models\PvSubKriteria;
 use App\Models\SubKriteria;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
@@ -12,6 +13,9 @@ class PerbandinganSubkriteriaController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->reset && $request->reset == 1) {
+            PerbandinganSubKriteria::truncate();
+        }
         $jenis = $request->input('data');
         $data = [
             'title' => 'Perbandingan SubKriteria',

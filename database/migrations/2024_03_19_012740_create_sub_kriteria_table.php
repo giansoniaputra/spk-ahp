@@ -18,8 +18,6 @@ return new class extends Migration
             $table->uuid('unique')->unique();
             $table->foreignId('kriteria_id')->constrained('kriteria')->onDelete('cascade');
             $table->string('sub_kriteria');
-            $table->string('nilai');
-            $table->integer('bobot');
             $table->timestamps();
         });
     }
