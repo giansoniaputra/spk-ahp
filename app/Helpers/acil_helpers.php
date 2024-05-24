@@ -137,7 +137,10 @@ function getKriteriaNama($no_urut)
 
 function getSubKriteriaNama($no_urut, $kriteria_id)
 {
-    $nama = SubKriteria::where('kriteria_id', $kriteria_id)->orderBy('id')->get('sub_kriteria');
+    $nama = DB::table('sub_kriteria as a')
+        ->join('alternatif as b', 'a.sub_kriteria', '=', 'b.id')
+        ->select('a.*', 'b.alternatif')
+        ->where('a.kriteria_id', $kriteria_id)->orderBy('a.id')->get('alternatif');
 
     return $nama[$no_urut];
 }

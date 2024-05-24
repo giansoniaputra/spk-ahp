@@ -11,14 +11,14 @@
                 <thead>
                     <tr>
                         <th>Sub Kriteria</th>
-                        @for ($i = 0; $i <= ($n - 1); $i++) <th>{{ getSubKriteriaNama($i, $kriteria_id)->sub_kriteria }}</th>
+                        @for ($i = 0; $i <= ($n - 1); $i++) <th>{{ getSubKriteriaNama($i, $kriteria_id)->alternatif }}</th>
                             @endfor
                     </tr>
                 </thead>
                 <tbody>
                     @for ($x = 0; $x <= ($n - 1); $x++) <tr>
                         <td>
-                            {{ getSubKriteriaNama($x, $kriteria_id)->sub_kriteria }}
+                            {{ getSubKriteriaNama($x, $kriteria_id)->alternatif }}
                         </td>
                         @for ($y = 0; $y <= ($n - 1); $y++) <td>
                             {{ round($matrik[$x][$y], 5) }}
@@ -44,7 +44,7 @@
                 <thead>
                     <tr>
                         <th>Sub Kriteria</th>
-                        @for ($i = 0; $i <= ($n - 1); $i++) <th>{{ getSubKriteriaNama($i, $kriteria_id)->sub_kriteria }}</th>
+                        @for ($i = 0; $i <= ($n - 1); $i++) <th>{{ getSubKriteriaNama($i, $kriteria_id)->alternatif }}</th>
                             @endfor
                             <th>Jumlah</th>
                             <th>Priority Vector</th>
@@ -52,7 +52,7 @@
                 </thead>
                 <tbody>
                     @for ($x = 0; $x <= ($n - 1); $x++) <tr>
-                        <td>{{ getSubKriteriaNama($x, $kriteria_id)->sub_kriteria }}</td>
+                        <td>{{ getSubKriteriaNama($x, $kriteria_id)->alternatif }}</td>
                         @for ($y = 0; $y <= ($n - 1); $y++) <td>{{ round($matrikb[$x][$y], 5) }}</td>
                             @endfor
                             <td>{{ round($jmlmnk[$x], 5) }}</td>
