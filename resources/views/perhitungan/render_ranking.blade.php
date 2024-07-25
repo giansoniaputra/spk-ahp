@@ -15,7 +15,7 @@
                         @foreach ($ranking as $row)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $row->alternatif }}</td>
+                            <td>{{ $row->keterangan }}</td>
                             <td>{{ $row->nilai }}</td>
                         </tr>
                         @endforeach

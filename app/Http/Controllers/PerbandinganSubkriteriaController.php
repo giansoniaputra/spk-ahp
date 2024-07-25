@@ -18,7 +18,7 @@ class PerbandinganSubkriteriaController extends Controller
         }
         $jenis = $request->input('data');
         $data = [
-            'title' => 'Perbandingan SubKriteria',
+            'title' => 'Perbandingan Alternatif',
             'kriteria' => Kriteria::with('sub_kriteria')->get(),
             'jenis' => $jenis
 

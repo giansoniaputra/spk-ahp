@@ -208,7 +208,7 @@ class PerhitunganController extends Controller
         $data2 = [
             'ranking' => DB::table('rangking as a')
                 ->join('alternatif as b', 'a.alternatif_id', '=', 'b.id')
-                ->select('a.*', 'b.alternatif')
+                ->select('a.*', 'b.alternatif', 'b.keterangan')
                 ->orderBy('nilai', 'desc')->get()
         ];
         $view = View::make('perhitungan.render_ranking', $data2)->render();
@@ -222,7 +222,7 @@ class PerhitunganController extends Controller
             'title' => '',
             'ranking' => DB::table('rangking as a')
                 ->join('alternatif as b', 'a.alternatif_id', '=', 'b.id')
-                ->select('a.*', 'b.alternatif')
+                ->select('a.*', 'b.alternatif', 'b.keterangan')
                 ->orderBy('nilai', 'desc')->get()
         ];
         return view('perhitungan.ranking', $data2);

@@ -139,7 +139,7 @@ function getSubKriteriaNama($no_urut, $kriteria_id)
 {
     $nama = DB::table('sub_kriteria as a')
         ->join('alternatif as b', 'a.sub_kriteria', '=', 'b.id')
-        ->select('a.*', 'b.alternatif')
+        ->select('a.*', 'b.alternatif', 'b.keterangan')
         ->where('a.kriteria_id', $kriteria_id)->orderBy('a.id')->get('alternatif');
 
     return $nama[$no_urut];
@@ -256,10 +256,10 @@ function showTabelPerbandinganSubkriteria($jenis, $kriteria_id)
 
     $SubKriteria = DB::table('sub_kriteria as a')
         ->join('alternatif as b', 'a.sub_kriteria', '=', 'b.id')
-        ->select('a.*', 'b.alternatif')
+        ->select('a.*', 'b.alternatif', 'b.keterangan')
         ->where('a.kriteria_id', $kriteria_id)->get();
     foreach ($SubKriteria as $row) {
-        $pilihan[] = $row->alternatif;
+        $pilihan[] = $row->keterangan;
     }
 
     $data = [
